@@ -43,8 +43,19 @@ blpw.all.n[5] <-NULL
 ```
 
 
+## I then deleted the recap column in blpw.all.r
+
+```{r}
+colnames(blpw.all.r)[colnames(blpw.all.r)=='mass']<-'recapture'
+blpw.all.r[5] <-NULL
+```
 
 
+## I then joined the capture and recapture tables by band number. 
+
+```{r}
+
+```
 
 
 
