@@ -1,0 +1,51 @@
+---
+title: "as_2"
+author: "Jessie Lilly"
+date: "February 16, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+
+##load tidyverse
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+blpw.all <- readRDS("~/RM11/assignment_2/blpw.all.RDS")
+View(blpw.all)
+```
+
+## create tables of first capture, and recaptures
+
+```{r}
+
+blpw.all.r <- filter(blpw.all,recap=="R")
+blpw.all.n <- filter(blpw.all,recap=="N")
+
+```
+
+## I then relabled the weight category in N to first_cap, to signify first capture, and deleted the recap column.
+
+```{r}
+colnames(blpw.all.n)[colnames(blpw.all.n)=='mass']<-'first_cap'
+
+blpw.all.n[5] <-NULL
+
+```
+
+
+
+
+
+
+
+
