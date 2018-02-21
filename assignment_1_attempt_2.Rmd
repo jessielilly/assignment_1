@@ -52,21 +52,19 @@ blpw.band <- blpw.all %>%
   arrange(band,date) %>%
   mutate(diff_mass=mass-first(mass)) %>% data.frame()
 ```
-
-
-## Graph
+ ##Changell 0 values to NA, Remove all birds where change in mass is equal to 0 (NA)
 ```{r}
-ggplot(data=blpw.band,mapping=aes(x=month,y=diff_mass))+
-+ geom_point()+geom_line()+
-+ facet_wrap(~location,nrow=1)+
- theme(legend.position='none')
-> ggplot(data=blpw.band,mapping=aes(x=month,y=diff_mass,color=band))+geom_point()+geom_line()+ facet_wrap(~location,nrow=1)+theme(legend.position='none')
-> View(blpw.band)
+data.filtered <- blpw.band[blpw.band==0]<-NA
+data.filtered<- na.omit(blpw.band)
 ```
 
 
-## Remove all birds where change in mass is equal to 0
+
+##Graph the change in Mass for all recaptured birds.
 
 ```{r}
-
-
+ggplot(data=data.filtered,mapping=aes(x=month,y=diff_mass,colour=band))+
++ geom_point()+
++ geom_line()+
++ facet_wrap(~location,nrow=1)+
++ theme(legend.position='none')
