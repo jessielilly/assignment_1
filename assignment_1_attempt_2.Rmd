@@ -38,10 +38,12 @@ blpw.all$month<-as.integer(blpw.all$month)
 
 ```
 ## Combine the year,month, and day into one column. 
+## create a column with only month and day
 
 ```{r}
 blpw.all$date<-with(blpw.all, ymd(paste(year,month,day,sep = "-")))
 
+blpw.all$date2 <- (month.abb[as.numeric(blpw.all$month,lpw.all$day,sep="-"))
 ```
 
 ## Create a table that is grouped by band and date, then take the first measure of mass, and subtract it from the next measured mass 
