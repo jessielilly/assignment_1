@@ -1,0 +1,72 @@
+---
+title: "assignment_1_trial_2"
+author: "Jessie Lilly"
+date: "February 21, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. First load tidyverse and lubridate. 
+
+```{r}
+library(tidyverse)
+library(lubridate)
+```
+## 2. Upload data file
+
+
+
+```{r}
+blpw.all <- readRDS("~/RM11/assignment_2/blpw.all.RDS")
+
+```
+
+## 3. Check the status of each column
+
+```{r}
+sapply(blpw.all, class)
+```
+
+## Change year and month to be integers. 
+
+```{r}
+blpw.all$year<-as.integer(blpw.all$year)
+blpw.all$month<-as.integer(blpw.all$month)
+
+```
+## Combine the year,month, and day into one column. 
+
+```{r}
+blpw.all$date<-with(blpw.all, ymd(paste(year,month,day,sep = "-")))
+
+```
+
+## Create a table that is grouped by band and date, then take the first measure of mass, and subtract it from the next measured mass 
+
+```{r}
+blpw.band <- blpw.all %>%
+  group_by(band) %>%
+  arrange(band,date) %>%
+  mutate(diff_mass=mass-first(mass)) %>% data.frame()
+```
+
+
+## Graph
+```{r}
+ggplot(data=blpw.band,mapping=aes(x=month,y=diff_mass))+
++ geom_point()+geom_line()+
++ facet_wrap(~location,nrow=1)+
+ theme(legend.position='none')
+> ggplot(data=blpw.band,mapping=aes(x=month,y=diff_mass,color=band))+geom_point()+geom_line()+ facet_wrap(~location,nrow=1)+theme(legend.position='none')
+> View(blpw.band)
+```
+
+
+## Remove all birds where change in mass is equal to 0
+
+```{r}
+
+
