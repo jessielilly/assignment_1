@@ -43,7 +43,6 @@ blpw.all$month<-as.integer(blpw.all$month)
 ```{r}
 blpw.all$date<-with(blpw.all, ymd(paste(year,month,day,sep = "-")))
 
-blpw.all$date2 <- (month.abb[as.numeric(blpw.all$month,lpw.all$day,sep="-"))
 ```
 
 ## Create a table that is grouped by band and date, then take the first measure of mass, and subtract it from the next measured mass 
@@ -54,18 +53,36 @@ blpw.band <- blpw.all %>%
   arrange(band,date) %>%
   mutate(diff_mass=mass-first(mass)) %>% data.frame()
 ```
- ##Changell 0 values to NA, Remove all birds where change in mass is equal to 0 (NA)
+ ##Changell 0 values to NA, Remove all birds where change in mass is equal to 0 (NA), 
 ```{r}
 data.filtered <- blpw.band[blpw.band==0]<-NA
 data.filtered<- na.omit(blpw.band)
 ```
 
+##Create a column that includes just month and day in data.filtered (data.filtered2) and blpw.band (blpw.band2)
 
+```{r}
+data.filtered$monthday <- paste(month.abb[data.filtered$month],data.filtered$day,sep = "-")
+
+data.filtered2 <- data.filtered %>%
+group_by(band) %>%
+arrange(band,monthday) %>%
+data.frame()
+
+
+blpw.band$monthday <- paste(month.abb[blpw.band$month],blpw.band$day,sep="-")
+
+blpw.band2 <- blpw.band %>%
+  group_by(band) %>%
+  arrange(band,monthday) %>%
+  data.frame()
+
+```
 
 ##Graph the change in Mass for all recaptured birds.
 
 ```{r}
-ggplot(data=data.filtered,mapping=aes(x=month,y=diff_mass,colour=band))+
+ggplot(data=data.filtered2,mapping=aes(x=monthday,y=diff_mass,colour=band))+
 + geom_point()+
 + geom_line()+
 + facet_wrap(~location,nrow=1)+
